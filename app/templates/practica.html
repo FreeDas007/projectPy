@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Практикум</title>
+<style type="text/css">
+body {	padding: 0;    margin: 4px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 14px;	background-colorXX: #265277;}
+#Result,#Ok,#PS {width:400px; border:1px solid grey; min-height: 50px; padding:5px; font-size: 14px;}
+#V2 {width:600px; min-height:200px; font-family:'Courier New', Courier, monospace; 
+	font-size:14px;}
+#Le { display:inline-block; width:30px; text-align:right; margin-top:5px; line-height: 15px;}
+#Ri {display:inline-block; vertical-align:top;}
+.taX {border:1px solid #ffffff; outline: none; font-size: 14px;
+    overflow: auto; overflow: hidden; border:1px solid; width:400px;}
+.taX:hoverXXX {border:1px solid #fff;}
+#comands {height:150px;}
+#Run {height:150px; font-size: 14px;}
+#Next {border-radius:4px; font-size: 14px;}
+#RunStep {border-radius:4px; font-size: 14px;}
+
+@media (min-width: 360px) {
+#V2 {width:350px;}
+.taX {width:300px;}
+#Result,#Ok,#PS { width:330px; }
+}
+
+@media (min-width: 685px) {
+#V2 {width:650px;}
+.taX {width:550px;}
+#Result,#Ok,#PS { width:630px; }
+}
+
+@media (min-width: 900px) {
+#V2 {width:800px;}
+.taX {width:700px;}
+#Result,#Ok,#PS { width:830px; }
+}
+</style>
+<script type="text/javascript">
+var d= new Date();
+tmBegin=d.getTime();	// начало практикума
+tmStep=tmBegin;			//начало очередного задания
+tmExc=tmBegin;			// начало очередного подхода (попытки)
+iCurrStep=1;			// номер упражнения (шага)
+maxStep=0;				// число Step
+nExcStep=0;
+nExc=0;					// номер текущего упр-я в Step
+nExcTotal=0;			// всего упр-й по факту в Практикуме
+nError=0;				// число ошибок в данном упражнении
+nErrorAll=0;			// всего ошибок
+nErrorStep=0;
+nErrorTotal=0;  // ???
+nPoint=0;				// число баллов за текущее упр-е
+nPointAll=0;			// всего баллов
+pTotal=0;
+ansTrue='';	// форм-ся из Obj
+pTrue=0;	// форм-ся из Obj для Step
+CurrPractica="{{session['CurrPractica']}}";
+
+function replaceAll(string, search, replace) {
+  return string.split(search).join(replace);
+}
+
+function DeCode(msg) {
+	out=msg.replaceAll('#','^4');
+	out=out.replaceAll('"','^2');
+	out=out.replaceAll("'",'^1');
+	out=out.replaceAll('/','^3');
+	out=out.replaceAll('\\','^5');
+	out=out.replaceAll('.','^8');
+	out=out.replaceAll(',','^7');
+	out=out.replaceAll('?','^6');
+	out=out.replaceAll('%','^9');
+	return out;
+}
+
+function Run() {
+	obj=document.getElementById('Run');	//alert(obj.innerHTML);
+	z=obj.value; //alert(z);
+	arr=z.split('\n');
+	n=arr.length;	//alert(n);
+	Lines='';   //[';
+	for (i=0;i<n;i++) {
+		Lines+=DeCode(arr[i])+"|||";
+	}
+	// запрос на выполнение кода через iFrameRu. Возрат через LoadResult()
+	document.getElementById('iFrameRun').src='/script2/'+Lines;
+}
+
+iLoadReasult=0
+function LoadResult() {
+	// пришел ответ: правильно/не правильно выполнено упр-е
+	// код выполнился при how=='script' во фрейме. html-интерпретация в фрейме (см. ниже в <body>)
+	iLoadReasult++;
+	if (iLoadReasult==1) {return;}
+	nExcStep++;
+	nExcTotal++;
+	document.getElementById('PS').innerHTML='';
+	var Result=document.getElementById('Result').innerHTML;
+	var Error=document.getElementById('Ok').innerHTML;
+	var d= new Date();
+	tm=d.getTime();	
+	deltaExc=parseFloat(((tm-tmExc)/1000).toFixed(2));
+	if (Error.trim()=='' && Result.trim()==ansTrue) {
+		tmExc=tm;
+		deltaStep=parseFloat(((tm-tmStep)/1000).toFixed(2));
+		tmStep=tm;
+		nError=0;
+		//console.log('iLoadReasult=',iLoadReasult-1,'nErr=',nError,nErrorAll,'deltaExc=',deltaExc,deltaStep)
+		SaveLog(CurrPractica,'Exc',nExcStep,deltaExc,nError,pTrue,pTrue,1,0)
+		SaveLog(CurrPractica,'Step',iCurrStep,deltaStep,nErrorStep,pTrue,pTrue,nExcStep,0)
+		nError=0; nErrorStep=0;
+		nExc=0; nExcStep=0;
+	}
+	else 
+	{
+		nErrorStep++; nErrorAll++; pTotal+=pTrue;
+		deltaExc=parseFloat(((tm-tmExc)/1000).toFixed(2));
+		tmExc=tm;
+		//console.log('iLoadReasult=',iLoadReasult,'nErr=',nError,nErrorAll,'deltaExc=',deltaExc)
+		SaveLog(CurrPractica,'Exc',nExcStep,deltaExc,1,0,0,1,0)
+	}
+}
+
+function Next() {
+	var Result=document.getElementById('Result').innerHTML;
+	var Error=document.getElementById('Ok').innerHTML;
+	if (Error.trim()=='' && Result.trim()==ansTrue) {
+		// Ok, задание выполнено успешно
+		document.getElementById('Result').innerHTML='';
+		document.getElementById('Ok').innerHTML='';
+		document.getElementById('PS').innerHTML='';
+		iCurrStep++;
+		nPointAll+=pTrue;
+		if (iCurrStep<=maxStep) {			// перейти к след.упр-ю
+			nError=0;
+			nPoint=0;
+			d= new Date();
+			tm=d.getTime();	
+			tmStep=tm;
+			tmExc=tm;
+			nExcStep=0;
+			i=iCurrStep-1;
+			document.getElementById('TaskStep').innerHTML=iCurrStep+"/"+maxStep+' '+replaceAll(Obj[2][i][0],'<br>','\n');
+			ansTrue=Obj[2][i][2];
+			pTrue=Obj[2][i][3];
+			zz=Obj[2][i][1];
+			zz=replaceAll(zz,'<br>','\n');
+			Equ(zz,self='x')
+			console.log('Next',iCurrStep,maxStep,ansTrue,pTrue,'nErrorAll=',nErrorAll,zz)
+		}
+		else {			// все упр-я выполнены
+			d= new Date();
+			tm=d.getTime();	
+			deltaPractica=parseFloat(((tm-tmBegin)/1000).toFixed(2));
+			document.getElementById('PS').innerHTML='Все упр-я выполнены. М о л о д ц ы !!!<br>'
+				+'время:'+deltaPractica+', ошибок:'+nErrorAll+', очков:'+nPointAll;
+			deltaBegin=parseFloat(((tm-tmBegin)/1000).toFixed(2));
+			tmBegin=tm;
+			//console.log('iLoadReasult=',iLoadReasult-1,'nErr=',nError,nErrorAll,'deltaExc=',deltaExc,deltaStep)
+			SaveLog(CurrPractica,'Total',nExcTotal,deltaBegin,nErrorAll,nPoint,nPointAll,nExcTotal,0)
+		}
+	}
+	else {		// nError++;  nErrorAll++;	ФОРМИРУЕТСЯ при LoadResult()
+		document.getElementById('PS').innerHTML='Задание не выполнено успешно<br>'+
+			'Result='+Result+'<br>nError='+nError+'<br>nErrorAll='+nErrorAll
+	}
+}
+
+nLinesLe=10;	// число текущее строк в поле для кода Python
+function PressX(event,thisX) {	// Нажали Enter
+	k=event.key;
+	if (k=='Enter') {			//console.log('Press',k);
+		txt=thisX.value;		//console.log('txt',txt);
+		Equ(txt);
+	}
+}
+
+function Equ(zz,self='') {
+	arr=zz.split('\n');
+	nFakt=arr.length;
+	nLinesLe=Math.max(10,nFakt)
+	txtLe='';
+	for (i=1;i<=nLinesLe;i++) {
+	   txtLe+=' '+i+'<br>';
+	}
+	console.log('Equ',nFakt,nLinesLe)
+	if (self!='') {
+		for (i=nFakt+1;i<=nLinesLe;i++) {zz+='\n';}
+		document.getElementById('Run').value=zz;
+	}
+	document.getElementById('Le').innerHTML=txtLe;
+	document.getElementById('Run').style.height=15*nLinesLe+'px';
+}
+
+function SaveLogDELETE(what,what2,Exc,timeExc,nError,nPoint,nPointAll) {
+	p=what+','+what2+','+Exc+','+timeExc+','+nError+','+nPoint+','+nPointAll;
+	console.log('Log:',p)
+	document.getElementById('iFrameLog').src='/logUser/'+p;
+}
+
+var inStek=0, outStek=0;
+var Stek=[];	// стек для сообщений для LogUser
+var iOpen=true;	// работаем без стека
+
+function SaveLog(what,what2,Exc,timeExc,nError,nPoint,nPointAll,CountExc,SubStep=0) {
+	var Pref,p;
+	p=what+','+what2+','+Exc+','+timeExc+','+nError+','+nPoint+','+nPointAll+','+CountExc+','+SubStep;
+	console.log('Log:',p);
+	if (iOpen) {
+		iOpen=false;
+		document.getElementById('iFrameLog').src='/logUser2/'+p;
+	}
+	else {
+		Stek[inStek]=p;
+		inStek++;
+	}
+}
+
+function GotoTop() {
+//window.scrollTo(0, 0);	// под Андроидом НЕ работает!
+document.documentElement.scrollIntoView(true);
+}
+
+iLoaded=0;
+function Loaded() {
+	// сообщение загружено в LogUser
+	iLoaded++;
+	if (iLoaded==1) return;
+	console.log('Loaded','inStek,outStek,iOpen=',inStek,outStek,iOpen);
+	if (iOpen) { alert('Error!'); return;}
+	if (inStek==outStek) {	iOpen=true;	return;}
+	if (inStek>outStek) {
+		p=Stek[outStek];
+		outStek++;
+		document.getElementById('iFrameLog').src='/logUser2/'+p;
+	}
+}
+</script>
+</head>
+<body>
+<h2 id=noPractica>Тренажор</h2>
+<div id=Task>  {{Task}} </div>
+<div id=divPDF style="display:none;">
+	<a id=pdf href='...' target="_blank">Скачать шпаргалку </a>
+</div>
+<br />
+<div id=TaskStep></div><br />
+
+Код:<br />
+<div id=V2>
+<div id=Le>
+1<br />2<br />3<br />4<br />5<br />
+6<br />7<br />8<br />9<br />10<br />
+</div>
+<div id=Ri>
+<textarea id=Run name="Run" class=taX onkeypress="PressX(event,this)" autocorrect='off' 
+	autocapitalize='off' spellcheck='false' tabindex='0'></textarea><br /><br />
+</div>
+</div>
+
+Результат:
+<div id=Result>{{Result}}</div><br />
+Ошибки:
+<div id=Ok>{{errTrace}}</div><br />
+PS:
+<div id=PS>{{Run}}</div><br /><br />
+<button id=RunStep onclick='Run()'>Выполнить</button> &nbsp;&nbsp;
+<button id=Next onclick="Next()">Следующее упражнение</button>
+
+<div id=txtLesson style="background-color:#CCCCCC; display:none;">
+{{ txtObj }}
+</div>
+<script>
+how='{{how}}';
+console.log('how=',how)
+if (how=='script') {	// этот код выполняется в iFrame: оттуда правим здесь
+	if (parent) {
+		parent.document.getElementById('Result').innerHTML=
+			document.getElementById('Result').innerHTML.trim().replaceAll('\n','<br>');
+		parent.document.getElementById('Ok').innerHTML=
+			document.getElementById('Ok').innerHTML.trim().replaceAll('\n','<br>');
+	}
+}
+if (how=='app') {	// вызов первый раз - получение Obj
+	EndLine='\\'+'n';
+	t=document.getElementById('txtLesson').innerHTML;
+	t2=replaceAll(t,'\n','');
+	t2=replaceAll(t2,EndLine,'<br>');
+	Obj=eval(t2);
+	maxStep=Obj[2].length;	// число упражнений (от 1)
+	nmLesson='{{ session["CurrPractica"]}}';
+	document.getElementById('noPractica').innerHTML='Практикум {{ session['CurrPractica'] }}.';
+	document.getElementById('Task').innerHTML=Obj[1];
+	document.getElementById('TaskStep').innerHTML=iCurrStep+"/"+maxStep+'. '+replaceAll(Obj[2][0][0],'<br>','\n');
+	ansTrue=Obj[2][0][2];
+	pTrue=Obj[2][0][3];
+	zz=Obj[2][0][1];
+	zz=replaceAll(zz,'<br>','\n');
+	Equ(zz);
+
+	document.getElementById('Run').value=zz;
+	console.log('app',iCurrStep,maxStep);
+	document.getElementById('Result').innerHTML='';
+	if (Obj[3]) { 
+		pdf=Obj[3];
+		console.log('(2) pdf=',pdf)
+		document.getElementById('pdf').href='/static/'+pdf;
+		document.getElementById('divPDF').style.display='block';
+	}
+	else pdf='';
+}
+</script>
+<iframe id=iFrameRun src='' onload='LoadResult()' style='display:none;'></iframe>
+<iframe id=iFrameLog src='' style='display:none;' onload='Loaded()'></iframe>
+</body></html>

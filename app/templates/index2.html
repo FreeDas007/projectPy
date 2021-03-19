@@ -1,0 +1,341 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Уроки по Python</title>
+<script type="text/javascript">
+arrWin=['menuV','About','Recommendation','Plan','Setting'];
+
+function Go(what) {
+	if (opt=='mono') location.href=what;
+	else {
+		document.getElementById('A').href=what;
+		document.getElementById('A').click();
+	}
+}
+
+function Hide(e) {
+	document.getElementById(e).style.display='none';
+}
+
+function Show(e,p='block') {
+	document.getElementById(e).style.display=p;
+}
+
+function HideAll() {
+	for (i=0;i<arrWin.length;i++) {
+		document.getElementById(arrWin[i]).style.display='none';
+	}
+}
+</script>
+<script>
+opt='multy';
+{% block body %}
+{% if session.get('opt')==None %} opt='mono';{% endif %}
+{% if session.get('opt')!=None %} opt="{{session['opt']}}";{% endif %}
+{% endblock %}
+</script>
+<style>
+body { 	padding: 0;    margin: 0;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;	background-color: #265277;	}
+#main {width:700px; margin:4px auto; position:relative;}
+.ListOfLessons {    color: #ced4e3;    width: 658px;    text-align: center;
+    background-color: #265277;    margin: 0 auto; border-radius:6px;
+    padding: 12px;    font-size: 14px; position:relative;}
+.nmLesson {
+    color: #ffffff;    background-color: dodgerblue;
+    border-radius: 4px 4px 0px 0px;	display: inline-block;
+    margin: 5px 0;		padding:4px 6px;    cursor: pointer;
+	border-bottom: 3px solid;    border-bottom-color: floralwhite;}
+.block2 {	color: #ffffff;    background-color: #326c9d;
+    border-top: 1px solid #629ccc;    border-bottom: 1px solid #18334b;
+    margin-bottom: 1px;    border-radius: 8px;    font-size: 14px;
+	width: 680px;    margin: 10px auto;    padding: 10px;}
+.LineLogin {
+    height: 24px;    background-color: #265277;    position: relative;
+    color: #ffffff;    font-size: 14px;    padding: 8px 8px;}
+.LineLogin {width:680px; height:30px;}
+a {color:#deffff; text-decoration:none;}
+.divX { border:1px solid grey; border-radius:5px; width:170px; padding:4px 10px;
+	display:inline-block; margin:4px 10px; vertical-align:top;}
+.divXLesson { font-weight:bold; color:#FFFFFF; margin:5px;}
+.divXTema { font-style:italic; font-size:11px; margin:10px 2px; cursor:pointer;
+	padding:3px 0px; border-radius:4px; background-color:#326c9d; border: 1px solid grey;}
+.divXpdf { cursor:pointer; font-size:11px; margin:10px 2px;
+	padding:3px 0px; border-radius:4px; background-color:#326c9d; border: 1px solid grey;}
+.divXPractica {cursor:pointer; font-size:11px; margin:10px 2px; 
+	padding:3px 0px; border-radius:4px; background-color:#326c9d; border: 1px solid grey;}
+#nmUser {color:#ffffff;}
+#About {display:none; position:absolute; top:-5px; left:20px; right:20px; 
+	background-color:cornflowerblue; 
+	z-index:10; border-radius:7px; padding:5px 5px 15px;}
+#menuV {display:none; position:absolute; top:0px; left:0px; rightXX:20px; 
+	background-color:cornflowerblue; width:200px; text-align:left;
+	z-index:10; border-radius:7px; padding:5px;}
+#Setting {display:none; position:absolute; top:-5px; left:20px; right:20px; 
+	background-color:cornflowerblue; 
+	z-index:10; border-radius:7px; padding:5px 5px 15px;}
+#Recommendation {display:none; position:absolute; top:-5px; left:20px; right:20px; 
+	background-color:cornflowerblue; 
+	z-index:10; border-radius:7px; padding:5px 5px 15px;}
+#Plan {display:none; position:absolute; top:-5px; left:20px; right:20px; 
+	background-color:cornflowerblue; 
+	z-index:10; border-radius:7px; padding:5px 5px 15px;}
+
+ul {margin: 0;  padding: 0;  list-style-type: none; border: 2px solid #326c9d;
+	border-radius: 5px 5px;  background-color:#33adff; text-align:left; height:30px;}
+li {display: inline;}
+ul a {color: #fff;  padding: 5px 10px;  text-decoration: none;
+  font-weight: bold;  display: inline-block; height:20px; vertical-align: middle;
+}
+ul a:hover {  background-color: #0066FF;} 
+svg { height:20px; width:25px; padding:0; margin:-4px;}
+li .txt { display:inline-block;}
+
+ul.VertMenu { width:auto; height:auto;}
+ul.VertMenu li {display: block;}
+ul.VertMenu li a {display:block;}
+.X {position:absolute; top:3px; right:2px; width:20px; height:20px; color:red; 
+	background-color: #ffffff; border-radius: 3px; cursor:pointer;}
+
+@media (min-width: 360px) {
+#main {width:320px;}
+.block2 {width:310px; padding:4px;}
+.ListOfLessons {width:306px; padding:2px;}
+.divX { width:270px; padding:4px 6px;}
+}
+
+@media (min-width: 685px) {
+#main {width:620px;}
+.block2 {width:610px; padding:2px;}
+.ListOfLessons {width:590px; margin-leftXX:4px; paddingX:2px;}
+.divX { width:260px; padding:4px 4px;}
+}
+
+@media (min-width: 900px) {
+#main {width:810px;}
+.block2 {width:810px; padding:2px;}
+.ListOfLessons {width:800px; margin-leftXX:4px; paddingX:2px;}
+.divX { width:226px; padding:4px 4px;}
+}
+
+</style>
+</head>
+<body>
+<div id=main>
+	<div>
+	<div style="position:absolute; top:2px; left:5px; height:30px;">
+		{% if session['login']=='' %}
+		<div id=nmUser>Привет, Незнакомец!</div>
+		{% else %}
+		<div id=nmUser>Привет, {{ session['login'] }}!</div>
+		{% endif %}
+	</div>
+	<div style="position:absolute; top:2px; right:5px;">
+		<div class=x>
+			<a href='/login' target="_blank">Войти</a>&nbsp;&nbsp;&nbsp;
+			<a href='/registr' target="_blank">Регистрация</a>&nbsp;&nbsp;&nbsp;
+			<a href='/logout' target="_blank">Выйти</a>
+		</div>
+	</div>
+	</div>
+	
+	<div class=block2 style="text-align:center;">
+		<h2>Курс по Python</h2>
+		<h3>Ясно, кратко, точно</h3>
+		<h4>с практикой, шпорами, обратной связью</h4>
+		<br>	
+		<div>
+		<ul onClickXX="HideAll();">
+		<li><a onClick="HideAll();Show('menuV');"> <svg viewBox="0 0 28 28"  height="20" width="24">
+<path d="M23.5 4a1.5 1.5 0 110 3h-19a1.5 1.5 0 110-3h19zm0 18a1.5 1.5 0 110 3h-19a1.5 1.5 0 110-3h19zm0-9a1.5 1.5 0 110 3h-19a1.5 1.5 0 110-3h19z" fill="#ffffff"></path>
+</svg> </a>
+		</li>
+		<li><a onClick="HideAll();Show('About');">
+		<svg height="20" width="24" viewBox="0 0 24 24"><path d="m0 0h24v24h-24z" fill="none"/><path d="m7.84 22.53a2 2 0 0 1 -.74-1.53v-2.1h-1.6a3.26 3.26 0 0 1 -3.4-3.4v-9a3.26 3.26 0 0 1 3.4-3.4h13a3.26 3.26 0 0 1 3.4 3.4v9a3.26 3.26 0 0 1 -3.4 3.4h-4.66l-3.72 3.26a1.69 1.69 0 0 1 -2.28.37zm4.93-5.09a1.4 1.4 0 0 1 .92-.35h4.81a1.47 1.47 0 0 0 1.6-1.6v-9a1.47 1.47 0 0 0 -1.6-1.6h-13a1.47 1.47 0 0 0 -1.6 1.61v9a1.47 1.47 0 0 0 1.6 1.6h2.5c.7.2.7.2.9.9v2.83z" fillXX="#828a99"  fill="#ffffff"/>
+</svg>
+		<div class=txt> О курсе </div></a></li>
+		<li><a onClick="HideAll();Show('Recommendation');">
+		<svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" style="fill:#ffffff;"><g>
+      <path d="M4,21V7H2V21a2,2,0,0,0,2,2H18V21Z"></path>
+      <path d="M6,13v2H8.6L5,18.6,6.4,20,10,16.4V19h2V13Z"></path>
+      <path d="M19,1H8A2,2,0,0,0,6,3v8H8V3H19V17H14v2h5a2,2,0,0,0,2-2V3A2,2,0,0,0,19,1Z"></path>
+    </g></svg>
+		<div class=txt> Советы </div></a></li>
+		<li><a onClick="HideAll();Show('Plan');">
+		<svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" 
+	style="fill:#ffffff">
+	<g><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path></g>
+</svg>
+		 План </a></li>
+		<li><a> </a></li>
+		<li><a onClick="HideAll();Show('Setting');">
+		<svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" 
+	style="fill:#ffffff;">
+	<g><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"></path></g>
+</svg>
+		 Настройка </a></li>
+		<li><a> </a></li>
+		</ul>
+		</div>	
+<!-- Выпадающие окна меню -->		
+		<div style="width:100%; position:relative; margin:0 auto;">
+<!-- Выпадающие вертикальное меню -->	
+			<div id=menuV>
+			<ul class=VertMenu onMouseOutXX="HideAll();">
+		<li onMouseOutXX="event.stopPropagation()"><a onClick="HideAll();Show('About');" onMouseOutXX="event.stopPropagation()"> <!--svg viewBox="0 0 28 28"  height="20" width="24"-->
+			<svg height="20" width="24" viewBox="0 0 24 24"><path d="m0 0h24v24h-24z" fill="none"/><path d="m7.84 22.53a2 2 0 0 1 -.74-1.53v-2.1h-1.6a3.26 3.26 0 0 1 -3.4-3.4v-9a3.26 3.26 0 0 1 3.4-3.4h13a3.26 3.26 0 0 1 3.4 3.4v9a3.26 3.26 0 0 1 -3.4 3.4h-4.66l-3.72 3.26a1.69 1.69 0 0 1 -2.28.37zm4.93-5.09a1.4 1.4 0 0 1 .92-.35h4.81a1.47 1.47 0 0 0 1.6-1.6v-9a1.47 1.47 0 0 0 -1.6-1.6h-13a1.47 1.47 0 0 0 -1.6 1.61v9a1.47 1.47 0 0 0 1.6 1.6h2.5c.7.2.7.2.9.9v2.83z" fillXX="#828a99"  fill="#ffffff"/></svg> О курсе </a></li>
+
+		<li><a onClick="HideAll();Show('Recommendation');">
+		<svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" style="fill:#ffffff;"><g>
+      <path d="M4,21V7H2V21a2,2,0,0,0,2,2H18V21Z"></path>
+      <path d="M6,13v2H8.6L5,18.6,6.4,20,10,16.4V19h2V13Z"></path>
+      <path d="M19,1H8A2,2,0,0,0,6,3v8H8V3H19V17H14v2h5a2,2,0,0,0,2-2V3A2,2,0,0,0,19,1Z"></path>
+    </g></svg>
+		<div class=txt> Советы </div></a></li>
+
+		<li><a onClick="HideAll();Show('Plan');">
+		<svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" 
+	style="fill:#ffffff">
+	<g><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path></g>
+</svg>	 План </a></li>
+
+		<li><a onClick="HideAll();Show('Setting');">
+		<svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" 
+	style="fill:#ffffff;">
+	<g><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"></path></g>
+</svg>
+		 Настройка </a></li>
+			 </ul>
+			 </div>	
+			 
+			<div id=About onClick="Hide('About');">
+			<div class=X onclick="Hide('About')"> X </div>
+			Привет, дружище!<br>
+			Python - почти само совершенство: лаконичный и красивый язык программирования. 
+			Не зря его полюбили разработчики искусственного интелекта и нейронных сетей. 
+			Вам он несомненно понравится, не влюбиться в него - не возможно!<br><br>
+			Данный курс можно назвать "Python за 14 дней", если исходить из правила 
+			"один день - один урок". Это возможно, но для рядового человека с его ленью, 
+			непредвиденными обстоятельствами, ... - почти невозможно. 
+			Если вам это удастся, то вы - герой, незаурядная, упорная и целеустремленная личность,
+			за которой по пятам следует успех и удача! Итак, если у вас получится - напишите мне об этом, страна должна знать своих героев в лицо!<br><br>
+			Курс состоит из 12 уроков, каждый из которых включает немного теории, шпаргалку по теме, практикум. Все это в совокупности, сформирует у вас знание и понимание языка и, главное,  навык и опыт применения языка. Упражнения и практикум позволят вам начать читать, писать и мыслить на Python.<br><br>
+			Для прохождения курса необходим только интернет и любой браузер. Лучше проходить курс на компьютере или ноутбуке (большой экран, клава и мышь - что еще надо для удобной работы), но можно, при необходимости, работать на планшете или смартфоне (для прохождения практикума не всегда удобно в силу небольшого экрана и большого пальца).<br><br>
+			Удачи вам, дамы и господа, молодые люди, пацаны и пацанки!<br><br>
+			</div>
+			
+		<div id=Recommendation>
+			<div class=X onclick="Hide('Recommendation')"> X </div>
+		Recommendation
+		</div>
+		
+		<div id=Plan>
+			<div class=X onclick="Hide('Plan')"> X </div>
+		Plan
+		</div>
+		
+		<dib id=Setting>
+			<div class=X onclick="Hide('Setting')"> X </div>
+		Setting
+		</div>	
+		</div>
+		
+		<div class=ListOfLessons>
+			<div class=divX>
+				<div class=divXLesson onClick="Go('/lesson/Lesson1')">Lesson 1</div>
+				<div class=divXTema onClick="Go('/lesson/Lesson1')">
+				Переменные, числовые переменные (40%)</div>
+				<div class=divXpdf>
+				<a id=pdf href='/static/str.pdf' target="_blank">Скачать шпаргалку </a>
+				</div>
+				<div class=divXPractica onClick="Go('/practica/Practica1')">Практикум (0%)</div>
+			</div>
+			<div class=divX>
+				<div class=divXLesson onClick="Go('/lesson/Lesson2')">Lesson 2</div>
+				<div class=divXTema onClick="Go('/lesson/Lesson2')">
+				Строковые переменные</div>
+				<div class=divXpdf>
+				<a href='/static/str.pdf' target="_blank">Скачать шпаргалку </a>
+				</div>
+				<div class=divXPractica>Практикум</div>
+			</div>
+			<div class=divX>
+				<div class=divXLesson>Lesson 3</div>
+				<div class=divXTema>Списки</div>
+				<div class=divXpdf>
+				<a id=pdf href='/static/List.pdf' target="_blank">Скачать шпаргалку </a>
+				</div>
+
+				<div class=divXPractica>Практикум</div>
+			</div>
+			<div class=divX>
+				<div class=divXLesson>Lesson 4</div>
+				<div class=divXTema>Ветвление, циклы</div>
+				<div class=divXpdf>
+				<a id=pdf href='/static/IfWhileFor.pdf' target="_blank">Скачать шпаргалку </a>
+				</div>
+
+				<div class=divXPractica>Практикум</div>
+			</div>
+			<div class=divX>
+				<div class=divXLesson>Lesson 5</div>
+				<div class=divXTema>Функции</div>
+				<div class=divXpdf>
+				<a id=pdf href='/static/Def.pdf' target="_blank">Скачать шпаргалку </a>
+				</div>
+				<div class=divXPractica>Практикум</div>
+			</div>
+			<div class=divX>
+				<div class=divXLesson>Lesson 6</div>
+				<div class=divXTema>Словари</div>
+				<div class=divXpdf>Шпоры</div>
+				<div class=divXPractica>Практикум</div>
+			</div>
+			<div class=divX>
+				<div class=divXLesson>Lesson 7</div>
+				<div class=divXTema>Кортежи, множества</div>
+				<div class=divXpdf>Шпоры</div>
+				<div class=divXPractica>Практикум</div>
+			</div>
+			<div class=divX>
+				<div class=divXLesson>Lesson 8</div>
+				<div class=divXTema>Файлы</div>
+				<div class=divXpdf>
+				<a id=pdf href='/static/File.pdf' target="_blank">Скачать шпаргалку </a>
+				</div>
+				<div class=divXPractica>Практикум</div>
+			</div>
+			<div class=divX>
+				<div class=divXLesson>Lesson 9</div>
+				<div class=divXTema>SQLite</div>
+				<div class=divXpdf>Шпоры</div>
+				<div class=divXPractica>Практикум</div>
+			</div>
+			<div class=divX>
+				<div class=divXLesson>Lesson 10</div>
+				<div class=divXTema>datetime, time</div>
+				<div class=divXpdf>Шпоры</div>
+				<div class=divXPractica>Практикум</div>
+			</div>
+			<div class=divX>
+				<div class=divXLesson>Lesson 11</div>
+				<div class=divXTema>Техника отладки</div>
+				<div class=divXpdf>Шпоры</div>
+				<div class=divXPractica>Практикум</div>
+			</div>
+			<div class=divX>
+				<div class=divXLesson>Lesson 12</div>
+				<div class=divXTema>Разработка приложений</div>
+				<div class=divXpdf>Шпоры</div>
+				<div class=divXPractica>Практикум</div>
+			</div>
+
+		</div>
+		
+		<div></div>
+		<div></div>
+	</div>
+<a id=A href='' target="_blank"></a></div>
+</body></html>
